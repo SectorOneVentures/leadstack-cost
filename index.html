@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LeadStackCost — B2B Lead Scraping & Enrichment Cost Calculator</title>
+  <meta name="description" content="Compare monthly B2B lead database subscriptions ($499-$1,500/mo) against scraping live Google Maps & directory leads with Apify + ScrapingBee.">
+  <link rel="canonical" href="https://sectoroneventures.github.io/leadstack-cost/">
+  <style>
+    :root {
+      --bg: #0b0f17;
+      --card: #151c28;
+      --border: #263248;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --green: #10b981;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .wrap { max-width: 960px; margin: 0 auto; padding: 32px 20px 64px; }
+    nav {
+      display: flex; gap: 16px; flex-wrap: wrap;
+      padding-bottom: 16px; margin-bottom: 28px;
+      border-bottom: 1px solid var(--border); font-size: 0.92rem;
+    }
+    nav a { color: var(--accent); text-decoration: none; font-weight: 600; }
+    h1 { font-size: 2rem; margin: 0 0 12px; }
+    .lead { color: var(--muted); font-size: 1.08rem; margin-bottom: 24px; }
+    .panel {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 24px; margin-bottom: 24px;
+    }
+    .slider-row { margin-bottom: 20px; }
+    .slider-head { display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 8px; }
+    input[type=range] { width: 100%; accent-color: var(--accent); cursor: pointer; }
+    table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+    th, td { text-align: left; padding: 14px 12px; border-bottom: 1px solid var(--border); }
+    th { color: var(--muted); font-size: 0.85rem; text-transform: uppercase; }
+    .best-row { background: rgba(16, 185, 129, 0.08); }
+    .price-tag { font-size: 1.2rem; font-weight: 800; color: var(--green); }
+    .btn {
+      display: inline-block; padding: 10px 16px; border-radius: 8px;
+      background: var(--accent); color: #0b0f17; font-weight: 700;
+      text-decoration: none; font-size: 0.92rem;
+    }
+    .btn-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+    .btn-secondary {
+      background: #1e293b; color: var(--text); border: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <nav>
+      <a href="https://sectoroneventures.github.io/infrabench/">GPU Memory Calculator</a>
+      <a href="https://sectoroneventures.github.io/infrabench/headless-scraper-benchmark.html">Headless Scraper Benchmark</a>
+      <a href="https://sectoroneventures.github.io/infrabench/docker-vps-tco-estimator.html">Docker vs. Cloud TCO</a>
+      <a href="https://github.com/SectorOneVentures/leadstack-cost">GitHub CLI Script</a>
+    </nav>
+
+    <h1>LeadStackCost — B2B Lead Scraping & Enrichment Cost Calculator</h1>
+    <p class="lead">Static B2B lead platforms charge $0.10-$0.35 per credit ($500-$1,500/mo), while scraping live business listings via Apify Google Maps actors ($5 free credit) + ScrapingBee website contact extraction costs ~$0.0006 per lead.</p>
+
+    <div class="panel">
+      <div class="slider-row">
+        <div class="slider-head">
+          <span>Monthly Verified Local / B2B Leads Needed (in Thousands)</span>
+          <span id="volDisplay" style="color:var(--accent);">25 k leads/mo</span>
+        </div>
+        <input type="range" id="volSlider" min="5" max="250" step="5" value="25">
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Option / Stack</th>
+            <th>Details</th>
+            <th>Estimated Monthly Cost</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="calcBody"></tbody>
+      </table>
+
+      <div class="btn-row">
+        <a class="btn" href="https://apify.com?fpr=infrabench7552" target="_blank" rel="noopener">Scrape Live Business Leads on Apify ($5/mo Free Credit)</a>
+        <a class="btn btn-secondary" href="https://www.scrapingbee.com?fpr=infrabench7552" target="_blank" rel="noopener">Extract Emails & Contact Pages with ScrapingBee (1,000 Free Calls)</a>
+        <a class="btn btn-secondary" href="https://www.digistore24.com/redir/98201/infrabench7552/" target="_blank" rel="noopener">Build High-Converting Lead Funnels with FunnelCockpit</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const PROVIDERS = [{"name": "Apify Google Maps + Contact Details Actor", "cost_per_unit": 0.55, "min_monthly": 0.0, "speed_note": "Live phone, email, website & rating extraction ($5 free credit)", "cta_label": "Run Apify Lead Scraper Free \u2192", "cta_url": "https://apify.com?fpr=infrabench7552", "highlight": true}, {"name": "ScrapingBee Custom Domain & Directory Scraper", "cost_per_unit": 0.68, "min_monthly": 0.0, "speed_note": "Stealth Chrome rendering for protected directories (1,000 free calls)", "cta_label": "Try ScrapingBee Free \u2192", "cta_url": "https://www.scrapingbee.com?fpr=infrabench7552", "highlight": false}, {"name": "Traditional Per-Credit B2B Lead SaaS", "cost_per_unit": 18.0, "min_monthly": 149.0, "speed_note": "Expensive per-credit lock-in with stale cached emails", "cta_label": "Switch to Live Apify Scraping \u2192", "cta_url": "https://apify.com?fpr=infrabench7552", "highlight": false}];
+    const UNIT = "k leads/mo";
+    const slider = document.getElementById('volSlider');
+    const disp = document.getElementById('volDisplay');
+    const tbody = document.getElementById('calcBody');
+
+    function render() {
+      const u = parseFloat(slider.value);
+      disp.textContent = u.toLocaleString() + ' ' + UNIT;
+      tbody.innerHTML = PROVIDERS.map(p => {
+        const cost = Math.max(p.min_monthly, u * p.cost_per_unit);
+        return `<tr class="${p.highlight ? 'best-row' : ''}">
+          <td><strong>${p.name}</strong></td>
+          <td style="color:#94a3b8;font-size:0.92rem;">${p.speed_note}</td>
+          <td class="price-tag">$${cost.toFixed(2)}/mo</td>
+          <td><a class="btn" href="${p.cta_url}" target="_blank" rel="noopener">${p.cta_label}</a></td>
+        </tr>`;
+      }).join('');
+    }
+    slider.addEventListener('input', render);
+    render();
+  </script>
+</body>
+</html>
